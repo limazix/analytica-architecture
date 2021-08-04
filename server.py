@@ -4,7 +4,7 @@ import os
 PORT = 8080
 name = os.environ.get('NAME')
 if name == None or len(name) == 0:
-  name = "world"
+  name = "world 2"
 MESSAGE = "Hello, " + name + "!"
 print("Message: '" + MESSAGE + "'")
 
