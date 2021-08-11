@@ -3,6 +3,12 @@
 
 name: Analytica Architecture
 
+env:
+  AZURE_WEBAPP_NAME: analytica-architecture
+  WORKING_DIRECTORY: '.'
+  PYTHON_VERSION: '3.8'
+  STARTUP_COMMAND: 'python server.py'
+
 on:
   push:
     branches:
