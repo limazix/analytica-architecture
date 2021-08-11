@@ -5,9 +5,8 @@ name: Analytica Architecture
 
 env:
   AZURE_WEBAPP_NAME: analytica-architecture
-  WORKING_DIRECTORY: '.'
-  PYTHON_VERSION: '3.8'
-  STARTUP_COMMAND: 'python server.py'
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  PYTHON_VERSION: '3.7'
 
 on:
   push:
@@ -25,10 +24,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -40,3 +39,12 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Building service
+      uses: azure/appservice-build@v2
+    - name: Deploy Service
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
