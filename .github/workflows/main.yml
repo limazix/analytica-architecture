@@ -53,7 +53,11 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    - name: Deploy Service
-      uses: azure/cli@v1
+    - name: Deploy web App using GH Action azure/webapps-deploy
+      uses: azure/webapps-deploy@v2
       with:
-        inlineScript: az webapp up --name ${{ env.AZURE_WEBAPP_NAME }}
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: logout
+      run: |
+        az logout
